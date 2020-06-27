@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import com.infoslab.presentation.AController;
 import com.infoslab.presentation.BController;
 import com.infoslab.presentation.ExController;
+import com.stone.infolabs.게시물관리.게시물관리자;
 
 @Configuration
 public class ControllerConfig {
@@ -23,5 +24,10 @@ public class ControllerConfig {
 	@Bean
 	public BController bController() {
 		return new BController();
+	}
+	
+	@Bean
+	public 게시물관리자 게시물관리자만들어라() {
+		return new 게시물관리자();
 	}
 }
