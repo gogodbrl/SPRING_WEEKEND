@@ -13,8 +13,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%= title %> 인 게시물이 저장되었습니다.
-	<%= contents %> 인 게시물이 저장되었습니다.
-	<%= writer %> 인 게시물이 저장되었습니다.
+	제목 <%= title %>인 게시물이 저장되었습니다. <br>
+	<%= contents %> 인 게시물이 저장되었습니다. <br>
+	<%= writer %> 인 게시물이 저장되었습니다. <br>
+	
+	<a href="list_board">목록으로</a>
 </body>
 </html>
