@@ -11,7 +11,7 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
 				com.stone.infolabs.boardmanage.config.MvcConfig
-				com.stone.infolabs.boardmanage.config.ControllerConfig
+				com.stone.infolabs.boardmanage.config.BeanConfig
 			</param-value>	
 		</init-param>
 		<load-on-startup>1</load-on-startup>
@@ -34,5 +34,4 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>		
 	</filter-mapping>
-	
 </web-app>
