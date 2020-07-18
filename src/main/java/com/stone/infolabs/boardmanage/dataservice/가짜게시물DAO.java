@@ -28,4 +28,16 @@ public class 가짜게시물DAO implements IBoardDAO {
 		return null;
 	}
 
+	@Override
+	public ArrayList<Board> SelectRange(long start, int size) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Board FindByNoIncreaseViews(long no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

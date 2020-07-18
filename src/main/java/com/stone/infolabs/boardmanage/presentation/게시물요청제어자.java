@@ -41,25 +41,44 @@ public class 게시물요청제어자 {
 		data.setViewName("add_info");
 		data.addObject("title", board.getTitle());
 		data.addObject("contents", board.getContents());
-		data.addObject("writer", board.getWriter().getNo());
+		data.addObject("member", board.getWriter());
 		return data;
 	}
+	
+//	/*******************************************************
+//	 * GET : list
+//	 * @return list.jsp
+//	 * (NOT USED!!)
+//	 *******************************************************/
+//	@RequestMapping(value = "/list_board", method=RequestMethod.GET)
+//	public ModelAndView 목록을출력하다() {
+//		
+//		/** Select Board **/
+//		ArrayList<Board> boardList = 게시물업무관리자.목록을출력하다();
+//		
+//		ModelAndView data = new ModelAndView();
+//		data.setViewName("list");
+//		data.addObject("boards", boardList);
+//		return data;
+//	}
 	
 	/*******************************************************
 	 * GET : list
 	 * @return list.jsp
 	 *******************************************************/
 	@RequestMapping(value = "/list_board", method=RequestMethod.GET)
-	public ModelAndView 목록을출력하다() {
+	public ModelAndView 페이징목록을출력하다(@RequestParam("row") long row, @RequestParam("size") int size) {
 		
 		/** Select Board **/
-		ArrayList<Board> boardList = 게시물업무관리자.목록을출력하다();
+		ArrayList<Board> boardList = (ArrayList<Board>) 게시물업무관리자.페이징목록을출력하다(row, size);
 		
 		ModelAndView data = new ModelAndView();
 		data.setViewName("list");
 		data.addObject("boards", boardList);
+		data.addObject("row", row);
 		return data;
 	}
+	
 	/*******************************************************
 	 * GET : detail_board
 	 * @return detail.jsp
@@ -69,13 +88,10 @@ public class 게시물요청제어자 {
 		if(no < 0) { return null; }
 		/** Select Board **/
 		Board board = 게시물업무관리자.게시물을조회하다(no);
-		
 		/** Set DataName **/
 		ModelAndView data = new ModelAndView();
 		data.setViewName("detail");
 		data.addObject("board", board);
-		
-		
 		return data;
 	}
 	

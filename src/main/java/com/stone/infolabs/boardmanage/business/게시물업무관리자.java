@@ -1,6 +1,7 @@
 package com.stone.infolabs.boardmanage.business;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +29,12 @@ public class 게시물업무관리자 implements I게시물업무관리자 {
 	
 	@Override
 	public Board 게시물을조회하다(long no) {
-		return boardDAO.FindByNo(no);
+//		return boardDAO.FindByNo(no);
+		return boardDAO.FindByNoIncreaseViews(no);
+	}
+
+	@Override
+	public List<Board> 페이징목록을출력하다(long row, int size) {
+		return boardDAO.SelectRange(row, size);
 	}	
 }

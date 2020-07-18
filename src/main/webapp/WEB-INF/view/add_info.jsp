@@ -17,6 +17,6 @@
 	<%= contents %> 인 게시물이 저장되었습니다. <br>
 	<%= writer %> 인 게시물이 저장되었습니다. <br>
 	
-	<a href="list_board">목록으로</a>
+	<a href="list_board?row=1&size=10">목록으로</a>
 </body>
 </html>

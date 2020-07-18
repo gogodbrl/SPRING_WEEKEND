@@ -6,6 +6,7 @@ public class Board {
 	long no;
 	String title;
 	String contents;
+	String writer;
 	Member member;
 	long views;
 	Date writedate;
@@ -28,11 +29,17 @@ public class Board {
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
-	public Member getWriter() {
+	public Member getMember() {
 		return member;
 	}
-	public void setWriter(Member member) {
+	public void setMember(Member member) {
 		this.member = member;
+	}
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 	public long getViews() {
 		return views;
