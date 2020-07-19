@@ -2,8 +2,8 @@
 SPRING 주말반 개인 정리
 
 2020.06.20 ~ 2020.07.25
-
 강사님 블로그 : http://blog.daum.net/celab
+
 ---------------------------------------------------------------
 
 # Spring 공부 정리
@@ -92,28 +92,43 @@ Webapp > WEB_INF > Web.xml에 다음과 같이 적어준다.
 > 이걸 mapping을 시키기 위해서 Spring에서 다음과 같이 등록한다.
 
 1. WebMvcConfigurer 인터페이스 implements
+
 2. @Configuration와 @EnableWebMvc 어노테이션 추가
+
 3. configureViewResolvers 메소드 오버라이드
+
 4. 아래처럼 작성
+
 - /WEB-INF/view까지 경로를 무시하고 return할 때 jsp확장자를 무시한다.
 ```
-		@Override
-		public void configureViewResolvers(ViewResolverRegistry registry) {
-			registry.jsp("/WEB-INF/view/",".jsp");
-		}
+@Override
+public void configureViewResolvers(ViewResolverRegistry registry) {
+	registry.jsp("/WEB-INF/view/",".jsp");
+}
 ```
 
 ### 4. 웹서버에서 WEB-INF안에 있는 파일은 보안때문에 처리거부당한다.
 
+[호출이 안됨] 
+
 > Dynamic Web Project를 만든다.
+
 > view를 작성하려면 WebContent 안에 작성하게 되는데
+
 > 웹을 사용하면서 WebContent > WEB-INF > view > test.html 식으로 작성하고
+
 > 웹서버 톰켓을 띄우고
+
 > http://127.0.0.1:8080/test/WEB-INF/view/test.html 식으로 작성을 하면 
+
 > 호출이 안된다(404에러발생)
 
-> 만약 WebContent 아래 test.html 식으로 작성을 하고 
+[호출이 됨]
+
+> WebContent 아래 test.html 식으로 작성을 하고
+
 > http://127.0.0.1:8080/test/test.html 식으로 작성을 하면
+
 > 호출이 된다.
 
 
@@ -134,14 +149,15 @@ Webapp > WEB_INF > Web.xml에 다음과 같이 적어준다.
 1. 우선 이렇게 Controller를 지정한다.
 ```
 @Controller
-public class AController {
+public 
+AController {
 	@RequestMapping(value="aaa", method=RequestMethod.GET)
 	public String Aprocessing() {
 		return "sayhello"; // 뷰지정
 	}
 }
 ```
-2. View도 등록해준다.
+2. View도 등록해준다. (sayhello.jsp)
 ```
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -155,7 +171,7 @@ public class AController {
 </body>
 </html>
 ```
-3. 마지막으로 Bean을 등록해주어야 한다.
+3. 마지막으로 Bean을 등록해주어야 한다. (ControllerConfig)
     모든 메소드마다 Bean을 생성하며 실제로는 싱글톤으로 객체가 생성된다.
 ```
 @Configuration
@@ -167,6 +183,10 @@ public class ControllerConfig {
 }
 ```
 그래야 정상적으로 View를 인식하는 것 같다.
+
+
+##### ControllerConfig에 @Bean 어노테이션은 Class단위로 작성되어야 한다
+> 메소드 단위인줄 알았는데 class 단위다!!!!!!!!!!!!!!!!
 
 #### 근데 @Autowire도 싱글톤인가??
 > 그건 아닌듯하다. 구글신 검색이 더필요함.
@@ -190,7 +210,9 @@ public class ControllerConfig {
 ```
 [중요]
 > /write_board 라고 쓸 경우 : 127.0.0.1:8190/write_board
+
 > write_board 라고 쓸 경우 : 127.0.0.1.8190/infoslab/write_board
+
 
 다음으로 Controller에서 HttpServletRequest 요청한다.
 매개변수에 HttpServletRequest를 쓰면 DispatcherServlet에서 읽어서 이 메소드로 넣어준다.
@@ -251,8 +273,7 @@ public String 게시물등록하다0(BoardVO board) {
 혹은 @RequestParam을 작성하여 요청으로 들어온 "parameter"를 맵핑해서 사용할 수 있다.
 ```
 @RequestMapping(value = "/write_board", method=RequestMethod.POST)
-public String 게시물등록하다1(@RequestParam("title") String title, 
-						  @RequestParam("content") String content) {
+public String 게시물등록하다1(@RequestParam("title") String title, @RequestParam("content") String content) {
 	return "board";
 }
 ```
@@ -281,9 +302,9 @@ public ModelAndView WriterInfo(BoardVO board) {
 3. jsp에서 받는 방법
 - Board라는 객체를 받기위해서 Board클래스를 import 해준다.
 - 스크립틀릿에서 request.getAttribute 메소드를 사용하여 받는다.
+
+//writeinfo.jsp
 ```
-writeinfo.jsp
----------------------------------------------------------------------------------------
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.stone.infolabs.게시물관리.Board" %>
 <%
@@ -305,7 +326,6 @@ writeinfo.jsp
 
 즉 서버에서 view로 보낼 때는 request.getAttribute를 이용하고
 view에서 보낸 데이터를 서버에서 받을 때는 request.getParameter를 이용한다고 보면된다.
-
 
 ## 스프링 어노테이션
 @Configuration 애노테이션이 붙은 설정 클래스를 내부적으로 스프링 빈으로 등록한다.
@@ -476,7 +496,7 @@ Query OK, 0 rows affected (0.13 sec)
 알아서 설치 하시오............
 ```
 
-##### (2020.07.04) board 테이블 다시 작성
+(2020.07.04) board 테이블 다시 작성
 ```
 create table board 
 (
@@ -510,6 +530,7 @@ create table board
 	<load-on-startup>1</load-on-startup>
 </servlet>
 ```
+
 - config.MvcConfig는 결국 = src/main/java의 config패키지 안에 MvcConfig.class를 의미한다.
 - 즉 com.stone.infolabs.boardmanage.config라고 패키지를 만들었다면 아래처럼 되어야 한다. 
 ```
@@ -550,8 +571,6 @@ public void question() {
 <Context docBase="SPRING_WEEKEND" path="/infoslab" reloadable="true" source="org.eclipse.jst.jee.server:SPRING_WEEKEND"/></Host>
 ```
 
-## ControllerConfig에 @Bean 어노테이션은 Class단위로 작성되어야 한다
-> 메소드 단위인줄 알았는데 class 단위다!!!!!!!!!!!!!!!!
 
 ## @Controller를 등록하고 다시 @Bean을 써줘야 하는 이유??
 - spring boot에서는 그냥 @Controller만 쓰면 되는거 같은데 Spring에서는 왜 @Controller를 등록하고 다시 @Bean을 등록해야 할까?
@@ -564,7 +583,9 @@ public void question() {
 
 스프링 빈과 자바 일반 객체와의 차이점은 없고 스프링 컨테이너에 의해 만들어진 객체를 스프링 빈이라고 부를 뿐이다.
 ```
+
 스프링에서 빈을 등록하는 방법이 두가지라고 한다.
+
 #### 1번 -  직접주입(@Bean & @Configuration)
 ```
 초기 스프링 기반 개발에서 빈 생성은 xml로 된 스프링 설정파일을 통해 이루어졌으며 지금 자바 클래스에서 관련 설정을 대신하는 방법을 주로 사용한다. 
@@ -632,10 +653,6 @@ public class ControllerConfig {
 찾아보니 이걸 **직접 주입 방식** 이라고 한다. new를 개발자가 하는 것이다.
 이걸 스프링3과 4에서 썼는데 5에서부터 @Autowire이라는 자동주입방식을 많이 쓴다.
 
-##### @configutaion에 @Bean을 쓰는게 주입을 받는다는 건가??
-new의 개념으로 보는게 아니라 SpringIoC에 @Bean을 만들고(이게 new임) 그 @Bean에 데이터를 넣는다(@Autowired)는 개념인가봄
-근데 그 @Autowired할 때 Type이 Unique하면 굳이 @configutaion설정을 안해도 되는거같음
-
 #### 2번 - 자동주입(@Autowire & @Resource & @Repository & @Primary & @Qualifier)
 
 이렇게 의존대상을 설정 코드에서 직접 주입하지 않고 스프링이 자동으로 의존하는 빈 객체를 주입하는 기능이라고 한다.
@@ -659,6 +676,8 @@ public class Children(){
 ```
 
 그러면 메소드에 @Autowired 거는건 뭐야??
+생성자, 메소드, 파라미터, 필드에 @Autowired 를 붙일 수 있다.
+
 ```
 //AutoWired 어노테이션 코드를 보면 다음과같다.
 @Target{ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE}
@@ -668,10 +687,9 @@ public @interface Autowired {
 	boolean required() default true;
 }
 ```
-이걸보면 생성자, 메소드, 파라미터, 필드에 @Autowired 를 붙일 수 있다는 뜻이다.
 
-```
 //BookService.java
+```
 @Service
 public class BookService {
 	private BookRepository bookRepository;
@@ -682,12 +700,21 @@ public class BookService {
 		this.bookRepository = bookRepository;
 	}
 }
+```
 
 //BookRepository.java
+```
 @Repository
 public class BookRepository { ... }
 ```
-아래처럼 @Autowired를 해야하는 클래스가 두개면 어떻게되지??
+
+##### @configutaion에 @Bean을 쓰는게 주입을 받는다는 의미인듯
+new의 개념으로 보는게 아니라 SpringIoC에 @Bean을 만들고(이게 new임) 그 @Bean에 데이터를 넣는다(@Autowired)는 개념인가봄
+근데 그 @Autowired할 때 Type이 Unique하면 굳이 @configutaion설정을 안해도 되는거같음
+
+
+다만 문제가 발생할때는 이 때임.
+Interface에서 분리되어 @Autowired를 해야하는 클래스가 두개면 문제가 된다.
 ```
 //FirstBookRepository.java
 @Repository
@@ -727,7 +754,7 @@ public class FirstBookRepository implements BookRepositoryInterface {
 (...)
 }
 ```
-반면에, @Qualifier는"BookService에서 FirstBookRepository를 쓸게"라고 선택 하는것이다.
+반면에, @Qualifier는 " **BookService에서 FirstBookRepository를 쓸께**" 라고 선택 하는것이다.
 ```
 @Service
 public class BookService {
@@ -804,21 +831,25 @@ private Bird penguin;
 ==>bean객체도 만든 후에 qualifier가 되어야 한다.
 
 아무튼 @Qualifier에 해당하는 빈 객체를 찾지 못하기 때문에, 스프링 컨테이너를 생성하는데 실패한다.
+```
+/**중요 - 스프링 @Autowired 어노테이션 적용시 의존 객체를 찾는 순서 **/
 
-/** 중요 **/
-스프링 @Autowired 어노테이션 적용시 의존 객체를 찾는 순서
-타입이 같은 bean 객체를 검색한다. => 1개이면 해당 bean 객체를 사용한다.
-@Qualifier가 명시되어 있는 경우 같은 값을 갖는 bean 객체여야 한다.
-타입이 같은 bean 객체가 두개 이상이고, @Qualifier가 없는 경우 이름이 같은 빈 객체를 찾는다.
-찾은경우 그 객체를 사용
-타입이 같은 bean 객체가 두개 이상이면, @Qualifier로 지정한 bean객체를 찾는다.
-찾은경우 그 객체를 사용
-위 경우 모두 해당되지 않으면 컨테이너가 Exception을 발생시킨다.
+> 타입이 같은 bean 객체를 검색한다. => 1개이면 해당 bean 객체를 사용한다.
+
+> @Qualifier가 명시되어 있는 경우 같은 값을 갖는 bean 객체여야 한다.
+
+> 타입이 같은 bean 객체가 두개 이상이고, @Qualifier가 없는 경우 이름이 같은 빈 객체를 찾는다.
+
+> 찾은경우 그 객체를 사용
+
+> 타입이 같은 bean 객체가 두개 이상이면, @Qualifier로 지정한 bean객체를 찾는다.
+
+> 찾은경우 그 객체를 사용
+
+> 위 경우 모두 해당되지 않으면 컨테이너가 Exception을 발생시킨다.
 
 그러니까 1개만 @Autowire을 쓰면 굳이 Bean을 안써줘도 문제가 안되는데 
 2개이상 쓸 경우 Bean을 반드시 명시해줘야 하는거 같다. 그럴려면 Bean을 명시적으로 만들어줘야 하는걸로 보인다.
-```
-
 
 # 20200705_다섯번째수업
 
@@ -932,8 +963,8 @@ public class MyController {
 ```
 #### 6. 웹서버 실행
 ```
-	//URL실행 : http://127.0.0.1:8190/infoslab/request1
-	Seoul
+//URL실행 : http://127.0.0.1:8190/infoslab/request1
+Seoul
 ```
 #### 7. 이걸로 알 수 있는 것 (나의 결론)
 ```
@@ -1174,36 +1205,42 @@ public class BeanConfig {
 동일하게 java파일만 있으면 스프링은 모른다. web.xml에 다음과같이 등록한다.
 ```
 <servlet>
-		<servlet-name>dispatcher</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextClass</param-name>
-			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>			
-		</init-param>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>
-				com.stone.infolabs.boardmanage.config.MvcConfig
-				com.stone.infolabs.boardmanage.config.BeanConfig
-			</param-value>	
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
+	<servlet-name>dispatcher</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<init-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>			
+	</init-param>
+	<init-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			com.stone.infolabs.boardmanage.config.MvcConfig
+			com.stone.infolabs.boardmanage.config.BeanConfig
+		</param-value>	
+	</init-param>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+	<servlet-name>dispatcher</servlet-name>
+	<url-pattern>/</url-pattern>
+</servlet-mapping>
 ```
 
 각각의 xml 태그를 설명하면
 ```
 1. <servlet>으로 시작하는 내용이 보이는데, web.xml에 dispatcher라는 서블릿을 추가해주겠다는 것이다.
+
 2. dispatcher-servlet의 서블릿에서만 사용할 수 있는 초기화 파라미터로 (<init-param>) contextConfigurationLocation을 주고 있다.
+
 3. contextConfigurationLocation이라는 것은 contextLoader가 <param-value>의 위치에 있는 설정 파일을 읽어들이겠다는 것이며, 그 파일이 dispatcher라는 서블릿으로 만들겠다는 것이다. 
+
 4. 그리고 아래에는 <context-param> 가 다시 나오고 있는데 설정파일이 dispatcher-servlet 말고도 datasource나 transcation 등도 있을 수 있으므로 그것들을 읽기 위해서 적어주었고, 
+
 5. WEB-INF/config/spring 폴더의 context-로 시작해서 .xml로 끝나는 파일을 읽어들이겠다고 명시하였다. 
+
 6. 즉, context-spring.xml 이나 context-root.xml과 같은 형식의 파일들을 읽겠다는 것이다.
+
 7. <listener>내용은 Spring에서 어떤 이벤트를 받기 위해서 대기하는 객체라고 이해하면 된다.
 ```
 
