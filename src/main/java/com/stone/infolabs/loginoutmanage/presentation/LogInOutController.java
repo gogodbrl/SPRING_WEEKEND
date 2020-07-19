@@ -2,6 +2,7 @@ package com.stone.infolabs.loginoutmanage.presentation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,6 +14,12 @@ import com.stone.infolabs.loginoutmanage.business.ILogInOutManager;
 public class LogInOutController {
 	@Autowired
 	ILogInOutManager loginoutManager;
+	
+	
+	@GetMapping("/prepare_login")
+	public String PrepareLogin() {
+		return "main";
+	}
 	
 	@PostMapping("/login")
 	public ModelAndView Login(@RequestParam String id, @RequestParam String password) {

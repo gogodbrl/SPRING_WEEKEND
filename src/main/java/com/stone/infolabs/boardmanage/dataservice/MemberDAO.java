@@ -105,7 +105,7 @@ public class MemberDAO implements IMemberDAO {
 			
 			ResultSet 수집된표관리자 = 준비된명령자.executeQuery();
 			if(수집된표관리자.next()) {
-				int cnt = 수집된표관리자.getInt(0);
+				int cnt = 수집된표관리자.getInt("cnt");
 				if(cnt > 0) { isId = true; }
 			}
 			연결자.close();

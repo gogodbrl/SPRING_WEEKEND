@@ -20,6 +20,7 @@ public class LogInOutManager implements ILogInOutManager {
 			boolean 존재여부 = memberDAO.isInById(id);
 			if(존재여부 == false) { result.message = "존재하지 않는 아이디입니다."; }
 			else { result.message = "아이디와 패스워드가 일치하지 않습니다."; }
+			result.resultCode = -1;
 		} else {
 			result.value = name;
 		}
