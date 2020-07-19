@@ -207,15 +207,20 @@ public class ControllerConfig {
 </body>
 </html>
 ```
-[중요]
+##### [중요]
 > /write_board 라고 쓸 경우 : 127.0.0.1:8190/write_board
 
 > write_board 라고 쓸 경우 : 127.0.0.1.8190/infoslab/write_board
 
 
-다음으로 Controller에서 HttpServletRequest 요청한다.
+##### POST 방식으로 담겨온 값을 가져오기 
+
+Controller에서 HttpServletRequest 요청한다.
+
 매개변수에 HttpServletRequest를 쓰면 DispatcherServlet에서 읽어서 이 메소드로 넣어준다.
+
 이렇게 쓰면 POST로 담긴 값을 getParameter로 가져올 수 있다.
+
 ```
 @RequestMapping(value = "/write_board", method=RequestMethod.POST)
 public String 게시물등록하다(HttpServletRequest request) {
@@ -228,7 +233,8 @@ public String 게시물등록하다(HttpServletRequest request) {
 - 이것을 많이 사용한다.
 - 스프링에서 자동으로 객체를 만들어서 매개변수로 던져준다.
 
-1. board.jsp form에 action을 write_board로 작성하는 것은 동일하다.
+
+##### 1. board.jsp form에 action을 write_board로 작성하는 것은 동일하다.
 ```
 <title>Insert title here</title>
 </head>
@@ -242,7 +248,8 @@ public String 게시물등록하다(HttpServletRequest request) {
 </body>
 </html>
 ```
-2. BoardVO를 만든다.
+
+##### 2. BoardVO를 만든다.
 ```
 class BoardVO {
 	String title;
@@ -261,7 +268,7 @@ class BoardVO {
 	}
 }
 ```
-3. Controller에 BoardVO를 매개변수로 등록한다.
+##### 3. Controller에 BoardVO를 매개변수로 등록한다.
 ```
 @RequestMapping(value = "/write_board", method=RequestMethod.GET)
 public String 게시물등록하다0(BoardVO board) {
@@ -269,7 +276,7 @@ public String 게시물등록하다0(BoardVO board) {
 	return "board";
 }
 ```
-혹은 @RequestParam을 작성하여 요청으로 들어온 "parameter"를 맵핑해서 사용할 수 있다.
+##### 4. @RequestParam을 작성하여 요청으로 들어온 "parameter"를 맵핑해서 사용할 수 있다.
 ```
 @RequestMapping(value = "/write_board", method=RequestMethod.POST)
 public String 게시물등록하다1(@RequestParam("title") String title, @RequestParam("content") String content) {
