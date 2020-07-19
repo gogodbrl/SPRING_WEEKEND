@@ -7,7 +7,12 @@ import com.stone.infolabs.boardmanage.business.I게시물업무관리자;
 import com.stone.infolabs.boardmanage.business.게시물업무관리자;
 import com.stone.infolabs.boardmanage.dataservice.BoardDAO;
 import com.stone.infolabs.boardmanage.dataservice.IBoardDAO;
+import com.stone.infolabs.boardmanage.dataservice.IMemberDAO;
+import com.stone.infolabs.boardmanage.dataservice.MemberDAO;
 import com.stone.infolabs.boardmanage.presentation.게시물요청제어자;
+import com.stone.infolabs.loginoutmanage.business.ILogInOutManager;
+import com.stone.infolabs.loginoutmanage.presentation.LogInOutController;
+import com.stone.infolabs.loginoutmanage.business.LogInOutManager;
 
 @Configuration
 public class BeanConfig {
@@ -26,4 +31,18 @@ public class BeanConfig {
 		return new BoardDAO();
 	}
 	
+	@Bean
+	public LogInOutController LogInOutController() {
+		return new LogInOutController();
+	}
+	
+	@Bean
+	public ILogInOutManager LogInOutManager() {
+		return new LogInOutManager();
+	}
+	
+	@Bean
+	public IMemberDAO MemberDAO() {
+		return new MemberDAO();
+	}
 }

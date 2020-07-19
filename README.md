@@ -188,7 +188,16 @@ public class ControllerConfig {
 > 메소드 단위인줄 알았는데 class 단위다!!!!!!!!!!!!!!!!
 
 #### 근데 @Autowire도 싱글톤인가??
-> 그건 아닌듯하다. 구글신 검색이 더필요함.
+- 맞는듯!!
+- Spring IoC Container(ApplicationContext)에서 빈을 찾아서 주입해주는 형식을 @Autowired라고 한다.
+
+```
+스프링에서 @Autowired로 주입되는 기준은 
+1. type기준 매핑이 먼저이고, 
+2. 같은 type을 구현한 여러 개의 클래스가 있다면 그 때 bean id로 구분해서 매핑하게 된다.
+```
+그림을 잘 기억해 놓자! @Autowird는 먼저  type기준 매핑이라는걸!
+![사진1](/README_image/picture_20200719_1.png)
 
 ## view => java 데이터 보내는 방법 [고객 => 서버에게 데이터 보냄]
 #### 1. Servlet의 HttpServletRequest 사용하기 ( Web의 기본적인 방법 )
@@ -715,8 +724,12 @@ public class BookRepository { ... }
 ```
 
 ##### @configutaion에 @Bean을 쓰는게 주입을 받는다는 의미인듯
-new의 개념으로 보는게 아니라 SpringIoC에 @Bean을 만들고(이게 new임) 그 @Bean에 데이터를 넣는다(@Autowired)는 개념인가봄
-근데 그 @Autowired할 때 Type이 Unique하면 굳이 @configutaion설정을 안해도 되는거같음
+
+new의 개념으로 보는게 아니라 SpringIoC에 @Bean을 만들고(이게 new임) 
+
+그 @Bean에 데이터를 넣는다(@Autowired)는 개념인가봄
+
+근데 그 @Autowired할 때 Type(대부분 class명)이 Unique하면 굳이 @configutaion설정을 안해도 되는거같음
 
 
 다만 문제가 발생할때는 이 때임.
@@ -760,7 +773,7 @@ public class FirstBookRepository implements BookRepositoryInterface {
 (...)
 }
 ```
-반면에, @Qualifier는 " **BookService에서 FirstBookRepository를 쓸께**" 라고 선택 하는것이다.
+반면에, @Qualifier는 " **BookService에서 FirstBookRepository를 쓸게**" 라고 선택 하는것이다.
 ```
 @Service
 public class BookService {
@@ -773,9 +786,9 @@ public class BookService {
 	}
 }
 ```
-참고로 @Qualifier가 @Primary보다 강력하다.
 
-**@Resource**
+##### 참고로 @Qualifier가 @Primary보다 강력하다.
+
 @Autowired, @Resource,@Inject은 모두 의존관계를 자동으로 연결해주는 기능을 가진 어노테이션이다.
 
 |용도|@Autowired|@Inject|@Resource|
@@ -784,11 +797,14 @@ public class BookService {
 |연결방식|타입에 맞춰서 자동주입|타입에 맞춰서 자동주입|이름에 맞춰서 자동주입
 
 @Inject와 @Resource는 자바 내장 어노테이션이므로 자바를 쓰는 어느곳이든 지 사용가능하다.
+
 @Autowired의 경우에는 스프링에서 등장한 어노테이션이라 스프링 이외에서는 사용 할 수 없다.
 
-```
-Bird 인터페이스를 상속하는 Chicken과 Penguin이라는 클래스가 있다.
 
+
+
+Bird 인터페이스를 상속하는 Chicken과 Penguin이라는 클래스가 있다.
+```
 //Bird.java
 public class Bird{}
 
@@ -804,7 +820,10 @@ public class Penguin implements Bird{
 	(...)
 }
 ```
-**@Component**는 개발자가 직접 컨트롤이 가능한 Class의 경우에 사용한다. Class단위로 자동으로 @Bean을 등록하는 역할인 거 같다.
+**@Component**는 개발자가 직접 컨트롤이 가능한 Class의 경우에 사용한다. 
+
+Class단위로 자동으로 @Bean을 등록하는 역할인 거 같다.
+
 이제 **타입 자동주입** 과  **이름 자동주입** 의 차이점을 알 수 있다.
 ```
 //Chicken 타입으로 연결됨
@@ -873,11 +892,15 @@ private Bird penguin;
 - **@WebServlet("className") 에 설정하거나 web.xml에 설정하는 방법 두가지가 있음**
 - 그리고 Servlet은 1회용이다.(요청오면 응답주고 끝이다. 사용자정보를 가지고 있지 않는다.)
 
-## WEB-INF를 가지고있어야 Root가 된다.
-그 위에  WebContent든 webapp이든 정해진 이름은 없다.
-그냥 DynamicWebContent를 쓰면 WebContent가 만들어진거고, Maven을 쓰면 webapp이 만들어진거임.
-aaa/WEB-INF로 써도 상관없음
-WAS는 WEB-INF를 루트로 아래 데이터를 싸그리 가져가는거임.
+## WEB-INF를 가지고있는 폴더는 Root가 된다.
+
+- WebContent든 webapp이든 정해진 이름은 없다.
+
+- 그냥 DynamicWebContent를 쓰면 WebContent가 만들어진거고, Maven을 쓰면 webapp이 만들어진거임.
+
+- aaa/WEB-INF로 써도 상관없음
+
+- WAS는 WEB-INF를 루트로 아래 데이터를 싸그리 가져가는거임.
 
 ## 포워딩으로 Controller -> View로 데이터 보내기 (MVC)
 - ServletA -> ServletB로 옮기면 ServletA는 Request객체를 넘기고 소멸한다.
@@ -889,7 +912,7 @@ WAS는 WEB-INF를 루트로 아래 데이터를 싸그리 가져가는거임.
 |>>> | getAttribute|
 |getParameter | <<<|
 
-## 스프링에서 ModelAndView로 데이터를 넘기는 방법 실습(DispatcherServlet이 실제로 동작하는 방식을 간략히 알 수있다. )
+## 스프링에서 DispatcherServlet이 실제로 동작하는 방식을 간략히 실습
 ```
 [준비물]
 - MyController.java
@@ -1014,10 +1037,10 @@ response.sendRedirect(url);
 
 ## DAO사용 시 인터페이스 사용하는 이유
 왜 인터페이스를 사용하는가?
-Business로직에서 DAO에 뭐가오든지 구조가 안바뀌어도 된다.
+- 서로 맞닿는 곳을 인터페이스로 추상화하는 개념이다.
+- Business로직에서 DAO에 뭐가오든지 구조가 안바뀌어도 된다.
 
-Interface 객체 사용, Mock 가짜개체로 사용이 가능하다.
-서로 맞닿는 곳을 인터페이스로 추상화한다.
+- Interface 객체 사용, Mock 가짜개체로 사용이 가능하다.
 
 DAO요청 시 다음과 같이 요청해서 쓴다.
 ```
@@ -1027,14 +1050,12 @@ public class 게시물업무관리자 {
 	
 	@Autowired
 	IBoardDAO boardDAO =new BoardDAO();
-	
 
 //BeanConfig.java (Bean만 바꿔주면 된다.)
 @Bean
 public IBoardDAO BoardDAO() {
 	return new 가짜게시물DAO();
 }
-	
 ```
 ## Member 테이블 생성
 ```
@@ -1046,15 +1067,14 @@ create table member(
 	email varchar(20),
 	phone varchar(20)
 )
-
 ```
 
 ## @PostConstruct
  - 일반함수에 생성자의 기능을 하는 것을 의미한다.
+ - @PostConstruct 애노테이션은 해당 컴포넌트가 완전히 생성된 후(주입된 후)에 한 번 실행해야할 일들을 코딩한 메소드에 붙이는 것이다.
+ - 즉, 해당 Bean이 완전히 생성된 후 무언가 작동하므로 NullPointerException이 일어나지 않는다.
+ - 물론 생성자에 붙이는 것은 여지없이 에러가 난다.
 ```
-@PostConstruct 애노테이션은 해당 컴포넌트가 완전히 생성된 후(주입된 후)에 한 번 실행해야할 일들을 코딩한 메소드에 붙이는 것이다.
-즉, 해당 Bean이 완전히 생성된 후 무언가 작동하므로 NullPointerException이 일어나지 않는다.
-물론 생성자에 붙이는 것은 여지없이 에러가 난다.
 @Component
 public class BeanTest1 {
     
@@ -1130,8 +1150,8 @@ public class BeanTest1 {
 ```
 ## Dispatcher-servlet.xml로 쓰는 것과 @Configuration에 @Bean의 차이
 #### xml에서 사용하기
-구글링을 해보면 bean을 등록할 때 main > java > webapp > WEB-INF > config > Dispatcher-servlet.xml을 만들어서 사용하는 걸로 보인다.
-그리고 이걸 main > java > webapp > WEB-INF > web.xml에 등록해주면 된다고 한다.
+- 구글링을 해보면 bean을 등록할 때 main > java > webapp > WEB-INF > config > Dispatcher-servlet.xml을 만들어서 사용하는 걸로 보인다.
+- 그리고 이걸 main > java > webapp > WEB-INF > web.xml에 등록해주면 된다고 한다.
 ```
 < ?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -1159,7 +1179,7 @@ public class BeanTest1 {
      
 </beans>
 ```
-그리고 web.xml에 등록해준다. dispatcher-servlet.xml을 작성하였더라도 web.xml에 등록을 안해주면 spring은 모른다. 
+그리고 web.xml에 등록해준다. **dispatcher-servlet.xml을 작성하였더라도 web.xml에 등록을 안해주면 spring은 모른다.** 
 
 그러니까 xml을 작성했으면 반드시 Web.xml에 등록을 해줘야 한다. 
 ```
@@ -1340,6 +1360,7 @@ public class ApiExceptionAdvice {
 
 ## @Profile 사용하기
 - 실수로 실서버에 개발서버 IP를 세팅해서 jar나 DB를 실행시키면 참사가 일어난다.
+
 그걸 방지할 방법이 @Profile이다.
 
 ```
@@ -1384,7 +1405,6 @@ OS 환경변수 -- $PATH
 @JsonFormat(pattern = "yyyyMMddHHmmss")
 private LocalDateTime birthDateTime;
 ```	
-
 ## 트렌젝션 처리
 
 ## AOP 프로그래밍 시도해보기
@@ -1402,6 +1422,261 @@ private LocalDateTime birthDateTime;
 프록시를 만들어서 쓴다는 데 이게 무슨뜻이지???
 
 
+# 20200719_아홉번째 수업
+
+## 세션에 대하여
+- 연결할 때의 정보를 유지할 조건으로 만들어진 객체였는데 로그인에 사용되어지게 됨
+- 웹 브라우저당 1개씩 생성되어 웹 컨테이너에 저장된다. (파기하기 전까지)
+
 ## Annotation 만들어보기
 
+발췌는 여기서 : https://codediver.tistory.com/71
 
+Annotation은 기본적으로 리플렉션(Reflection)을 통한 주입(Injection)의 느낌인거 같다. (나의 느낌적인 느낌)
+```
+1. Annotation @Interface를 만든다.
+2. 그 interface를 담을 Object VO를 만들고 주입한다.
+3. Injection을 실행하는 클래스를 만든다.
+4. 최종파일에서 주입이 완료된 VO를 사용한다.
+```
+
+어노테이션에서 사용할 수 있는범위는 다음과 같다고한다.
+```
+@Inherited 									// 부모클래스에서 어노테이션을 상속 받을 수 있습니다.
+@Documented 								// 문서에도 어노테이션의 정보가 표현됩니다.
+@Retention(RetentionPolicy.RUNTIME) 		// 컴파일이후에도 JVM에 의해 참조가 가능합니다.
+@Retention(RetentionPolicy.CLASS) 			// 컴파일러가 클래스를 참조할 때까지 유효합니다. 
+@Retention(RetentionPolicy.SOURCE) 			// 어노테이션 정보는 컴파일 이후 없어집니다.
+@Target({ 									// 어노테이션이 적용할 위치를 결정합니다.
+	ElementType.PACKAGE, 					// 이 어노테이션을 다른 java파일에서 패키지 선언 시에 사용 가능
+    ElementType.TYPE, 						// 이 어노테이션을 다른 java파일에서 타입 선언 시에 사용 가능
+    ElementType.TYPE_USE 					// 이 어노테이션을 다른 java파일에서 타입 사용 시에 사용 가능   
+    ElementType.ANNOTATION_TYPE, 			// 이 어노테이션을 다른 java파일에서 어노테이션 타입 선언 시에 사용 가능
+    ElementType.CONSTRUCTOR, 				// 이 어노테이션을 다른 java파일에서 생성자 선언 시에 사용 가능 
+    ElementType.FIELD, 						// 이 어노테이션을 다른 java파일에서 멤버 변수 선언 시에 사용 가능
+    ElementType.METHOD, 					// 이 어노테이션을 다른 java파일에서 메소드 선언 시에 사용 가능
+    ElementType.LOCAL_VARIABLE, 			// 이 어노테이션을 다른 java파일에서 지역 변수 선언 시에 사용 가능
+    ElementType.PARAMETER, 					// 이 어노테이션을 다른 java파일에서 매개 변수 선언 시에 사용 가능 
+    ElementType.TYPE_PARAMETER, 			// 이 어노테이션을 다른 java파일에서 매개 변수 타입 선언 시에 사용 가능  
+    
+})
+public @interface AnnotationSample {
+    public enum Quality {BAD, GOOD, VERYGOOD} 	// enum 타입을 선언가능
+    String value();  							// String은 기본 자료형은 아니지만 사용 가능
+    int[] values();								// 배열 형태로 사용 가능
+    Quality quality() default Quality.GOOD;		// 객체 형태로 사용 가능 및 기본값 설정 가능
+}
+```
+
+이걸 대부분 많이 사용하는 듯 하다.
+
+> @Retention(RetentionPolicy.RUNTIME)
+
+> ElementType.FIELD, ElementType.PARAMETER
+
+
+### 그럼 이제 나도 Annotation을 만들 수 있다.
+
+##### 1. Custom Annotation을 만든다.
+
+StringInjector.java (Interface)
+```
+/** 
+ * String 문자열을 주입하기 위해 선언하는 어노테이션.
+ * FIELD에만 선언가능하고 JVM이 어노테이션 정보를 참조.
+ **/
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface StringInjector {
+	String value() default "This is StringInjector";
+}
+```
+
+##### 2. Annotation을 사용하여 값을 부여한다.
+
+- @StringInjector 애노테이션을 사용은 했지만 주입은 안된 상태라고 본다.
+- 그냥 사용만 된 상태라고 생각함.
+
+MyObject.java
+```
+public class MyObject {
+	@StringInjector("My Name is jakim")
+	private String name;
+	
+	@StringInjector
+	private String defaultValue;
+	
+	@StringInjector
+	private Integer invalidType;
+
+	public String getName() {
+		return name;
+	}
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+	public Integer getInvalidType() {
+		return invalidType;
+	}
+}
+```
+
+##### 3. MyObject에 값을 주입한다.
+- 실질적으로 컨테이너에서 값이 주입되는 단계라고 생각한다.
+
+MyContextContainer.java
+```
+public class MyContextContainer {
+	
+	public MyContextContainer() {}
+	
+	/**
+     * 객체를 반환하기 전에 어노테이션을 적용
+     * Reflaction해서 값을 VO(여기서는 : MyObject.class)에 있는 필드값을 가져오게 되고
+     * StringInjector annotation의 value값을 MyObject.class에 주입
+     */
+	private <T>T invokeAnnotations(T instance) throws IllegalAccessException {
+		Field [] fields = instance.getClass().getDeclaredFields();
+		for( Field field : fields ) {
+			StringInjector annotation = field.getAnnotation(StringInjector.class);
+			if( annotation != null && field.getType() == String.class) {
+				field.setAccessible(true);
+				field.set(instance, annotation.value());
+			}
+		}
+		return instance;
+	}
+	
+    /**
+     * 매개변수로 받은 클래스의 객체를 반환.
+     * 소프트 코딩(Class<?> clazz가 오는 모든 객체에 대하여 값을 받을 수 있음)
+     */
+	@SuppressWarnings("unchecked")
+	public <T> T get(Class<?> clazz) throws IllegalAccessException, InstantiationException {
+		T instance = (T) clazz.newInstance();
+		instance = invokeAnnotations(instance);
+		return instance;
+	}
+}
+```
+
+##### 4. 사용할 곳에서 선언한다.
+
+AnnotationDemo.java
+```
+public class AnnotationDemo {
+	public static void main(String[] args) throws IllegalAccessException, InstantiationException {
+		//컨텍스트 컨테이너를 초기화
+		MyContextContainer demo = new MyContextContainer();
+		
+		//MyObject 객체에 값 주입
+		MyObject obj = demo.get(MyObject.class);
+		
+		//값이 Injection된 것을 알 수 있음
+		System.out.println(obj.getName());
+		System.out.println(obj.getDefaultValue());
+		System.out.println(obj.getInvalidType());
+	}
+}
+
+```
+흠 근데 그럼 도대체 @Controller이런 건 사용되면 어떻게 쓰이는거지..? 어렵네..............
+
+## Spring 시큐리티
+- 말그대로 개발자가 작성해야 할 웹 보안을 스프링이 대신 처리해주는 기능으로 보임
+- 보안에 해당하는 @Bean을 생성하면 되는걸로 보임
+- 와 이건 어렵다..ㅋㅋ;;
+
+
+## OAuth2.0 인증 개요
+- 대표적으로 네이버 아이디로 로그인, 페이스북으로 로그인, 구글 아이디로 로그인 등을 의미
+- 왜 OAuth2.0을 사용하는가
+```
+페이스북을 예제로 보면 3rd-party 애플리케이션이 페이스북의 특정 기능(3rd-party 애플리케이션 사용자의 리소스)을 사용하게 되면 사용자의 동의를 받아야한다.
+그러면 사용자의 페이스북 인증정보를 3rd-party 애플리케이션에도 가지고 있어야할까? 
+아니다 ! 인증은 페이스북에서 하는 것이고 3rd-party 애플리케이션은 페이스북에게 접근을 허가할 액세스 토큰을 발급받고 그 토큰으로 사용자의 리소스를 페이스북에게 요청하여 사용하는 것이다.
+```
+
+예시))
+- OAuth2.0 클라이언트에서 getCredentials 식으로 token서버에서 token을 가져온다.
+- 가져온 토큰을 요청할 때 다시보내주는거임.
+- 말그대로 인증만 하는거임, 그리고 인증을 하기위한 방식인거임
+- 인증절차는 다음과 같음(단순함)
+```
+클라이언트 : Server에서 주는 API를 사용하고 싶습니다.
+서버 : 너 누구세요??
+서버 : 나쁜놈은 아닌거 같은데 못믿겠으니 인증을 해야겠는데요..
+(정적)
+서버 : 우리가 제공하는 객체가 있는데... 흠흠 이걸로 인증 할래요?
+클라이언트 : 제공해주는 객체에 제 정보를 담아서 보내드리려고 하는데 뭘로 드리면 될까요? 
+서버 : Code를 제공해줄테니 함수를 태워서 client_id와 client_secret을 만들어서 함께 주면 인증해줄게요.
+클라이언트 : 여기 Code와 client_id 와 client_secret을 만들어서 드립니다.
+서버 : 그럼 token을 내려줄테니 이걸 API쓸 때 같이 던져주면 값을 드릴게요.
+클라이언트 : ㅇㅋㅇㅋ
+```
+
+## IoC라는건 뭐고 Spring IoC는 뭐야?
+- 개발자가 만드는 객체가 아니라 Spring에서 객체를 만들고, 그 객체에 인스턴스를 할당하는 행위
+- 인스턴스 주입(DI) 방향이 역방향이라 "IoC"라고 한다.
+
+## 스프링 컨테이너 
+- 인스턴스의 생명주기를 관리하며, 생성된 인스턴스들에게 추가적인 기능을 제공하는 것을 "컨테이너"라고 한다.
+
+- 예를 들어 서블릿 컨테이너는 서블릿의 "생성, 소멸, Etc.."등을 모두 관리할 수 있다.
+- Servlet 컨테이너의 web.xml을 보면 JSP/Servlet 접근 권한에 대한 추가적인 서비스도 지원하고 있다.
+- 이는 Servlet의 구현과는 별도로 각 JSP/Servlet에 대한 Security를 관리해주는 기능을 한다.
+
+따라서 스프링 컨테이너는
+- 스프링 컨테이너는 스프링 프레임워크 내에서 똑같이 인스턴스들의 "생성, 소멸, Etc.."등을 관리하는거다.
+- 종속객체 주입을 이용하여 애플리케이션을 구성하는 컴포넌트들을 관리한다.
+- 컨테이너가 맘대로 객체를 생성하는 게 아니라 프로그램을 이용하는 이용자의 호출에 의해 컨테이너가 동작하게 되는 구조이나, 프로그래머가 작성한 코드는 컨테이너를 사용하게 됨으로서 프로그래머의 손을 떠나 컨테이너의 영역으로 떠나버리게 된다.
+
+## 스프링 컨테이너의 두 종류
+#### 1. 빈팩토리 BeanFactory (org.springframework.beans.factory.BeanFactory) 
+- DI의 기본사항을 제공하는 가장 단순한 컨테이너
+- 팩토리 디자인 패턴을 구현한 것. Bean(이하 빈) 팩토리는 빈을 생성하고 분배하는 책임을 지는 클래스
+- 빈 팩토리가 빈의 정의는 즉시 로딩하는 반면, 빈 자체가 필요하게 되기 전까지는 인스턴스화를 하지 않는다 (lazy loading, 게으른 호출)
+```
+BeanFactory factory = new XmlBeanFactory(new FileInputStream("bean.xml"));
+MyBean myBean = (Mybean) factory.getBean("myBean");
+```
+getBean()이 호출되면, 팩토리는 의존성 주입을 이용해 빈을 인스턴스화하고 빈의 특성을 설정하기 시작. 여기서 빈의 일생이 시작된다.
+
+#### 2. 어플리케이션 컨텍스트 ApplicationContext (org.springframework.context.factory.BeanFactory) 
+
+- 빈팩토리와 유사한 기능을 제공하지만 좀 더 많은 기능을 제공하는 어플리케이션 컨텍스트
+- 빈팩토리보다 더 추가적으로 제공하는 기능
+
+```
+국제화가 지원되는 텍스트 메시지를 관리해 준다.
+이미지같은 파일 자원을 로드 할 수 있는 포괄적인 방법을 제공해준다.
+리스너로 등록된 빈에게 이벤트 발생을 알려준다.
+```
+따라서 대부분의 애플리케이션에서는 빈팩토리보다는 어플리케이션 컨텍스트를 사용하는 것이 좋다.
+
+가장 많이 사용되는 어플리케이션 컨텍스트 구현체
+
+```
+ClassPathXmlApplicationContext : 클래스패스에 위치한 xml 파일에서 컨텐스트 정의 내용을 읽어들인다.
+FileSystemxmlApplicationContext : 파일 경로로 지정된 xml 파일에서 컨텐스트 정의 내용을 읽어들인다.
+XmlWebApplicationContext : 웹 어플리케이션에 포함된 xml 파일에서 컨텐스트 정의 내용을 읽어들인다.
+```
+사용법
+```
+ApplicationContext context = new ClassPathXmlApplicationContext("conf/bean.xml");
+MyBean bean = context.getBean("myBean");
+```
+
+- 빈 팩토리와 애플리케이션컨텍스트의 기능상의 차이점 말고 또 다른 차이점은 다음과 같다.
+> 빈 팩토리 : 처음으로 getBean()이 호출된 시점에서야 해당 빈을 생성(lazy loading)
+
+> 애플리케이션 컨텍스트 : 컨텍스트 초기화 시점에 모든 싱글톤 빈을 미리 로드한 후 애플리케이션 기동 후에는 빈을 지연 없이 얻을 수 있음(미리 빈을 생성해 놓아 빈이 필요할 때 즉시 사용할 수 있도록 보장)
+
+출처는 여기 : https://limmmee.tistory.com/13
+
+결론
+```
+1. Bean을 만들고 그걸 스프링 컨테이너에 등록한다.
+2. @Autowired 같은걸로 스프링 컨테이너에 만들어 놓은 bean에 값을 주입한다.
+3. 이걸 스프링은 @Configuration에 @Bean등록으로 쓰는거고, 스프링부트는 내부에서 알아서 해주는듯
+```

@@ -5,11 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.stone.infolabs.boardmanage.common.Member;
 
-@Component
+@Repository
 public class MemberDAO implements IMemberDAO {
 
 	@Override
@@ -68,5 +68,52 @@ public class MemberDAO implements IMemberDAO {
 		}
 		return member;
 	}
-
+	
+	@Override
+	public String FindByIdAndPassword(String id, String password) {
+		String name = null;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection 연결자 = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "test","1234");
+			
+			String 행조회SQL="select * from member where id=? and password=?";
+			PreparedStatement 준비된명령자 = 연결자.prepareStatement(행조회SQL);
+			준비된명령자.setString(1, id);
+			준비된명령자.setString(2, password);
+			
+			ResultSet 수집된표관리자 = 준비된명령자.executeQuery();
+			if(수집된표관리자.next()) {
+				name = 수집된표관리자.getString("name");
+			}
+			연결자.close();
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return name;
+	}
+	
+	public boolean isInById(String id) {
+		boolean isId = false;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection 연결자 = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "test","1234");
+			
+			String 행조회SQL="select count(*) as cnt from member where id=?";
+			PreparedStatement 준비된명령자 = 연결자.prepareStatement(행조회SQL);
+			준비된명령자.setString(1, id);
+			
+			ResultSet 수집된표관리자 = 준비된명령자.executeQuery();
+			if(수집된표관리자.next()) {
+				int cnt = 수집된표관리자.getInt(0);
+				if(cnt > 0) { isId = true; }
+			}
+			연결자.close();
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return isId;
+	}
+	
 }

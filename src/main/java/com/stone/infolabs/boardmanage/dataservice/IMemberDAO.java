@@ -8,4 +8,6 @@ import com.stone.infolabs.boardmanage.common.Member;
 public interface IMemberDAO {
 	void Save(Member member);
 	Member FindByNo(long no);
+	String FindByIdAndPassword(String id, String password);
+	boolean isInById(String id);
 }
